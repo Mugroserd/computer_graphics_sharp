@@ -18,9 +18,13 @@ namespace Renderer
 
         public void DrawWire(TextureBuffer target, Matrix4 transformationMatrix, Color color)
         {
+            int[,] zbuffer = new int[640, 640];
+            for (int i = 0; i < 640; i++)
+                for (int j = 0; j < 640; j++)
+                    zbuffer[i, j] = +2147483647;
             foreach (Triangle triangle in triangles)
                 // triangle.DrawWire(target, transformationMatrix, color);
-                triangle.DrawTriangle(target, transformationMatrix);
+                triangle.DrawTriangle(target, transformationMatrix, ref zbuffer);
         }
         //getstrung
     }

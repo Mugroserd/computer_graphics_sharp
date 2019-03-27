@@ -67,7 +67,7 @@ namespace Renderer
 
             point.y = buffer.Height/2 + coordinate.values[1] * buffer.Height;
 
-            point.z = coordinate.values[2];
+            point.z = buffer.Height/2 + coordinate.values[2];
             return point;
         }
         
@@ -104,7 +104,7 @@ namespace Renderer
             }
         }
 
-        public void DrawTriangle(VertexParam coordinate1, VertexParam coordinate2, VertexParam coordinate3, VertexParam point1texture, VertexParam point2texture, VertexParam point3texture)
+        public void DrawTriangle(VertexParam coordinate1, VertexParam coordinate2, VertexParam coordinate3, VertexParam point1texture, VertexParam point2texture, VertexParam point3texture, ref int[,] zbuffer)
         {
             Point3F point1 = ConvertToRange(coordinate1);
             Point3F point2 = ConvertToRange(coordinate2);
@@ -115,10 +115,6 @@ namespace Renderer
             int y0 = (int)Math.Floor((Math.Min(point1.y, Math.Min(point2.y, point3.y))));
             int y1 = (int)Math.Ceiling((Math.Max(point1.y, Math.Max(point2.y, point3.y))));
 
-            int[,] zbuffer = new int[width, height];
-            for (int i = 0; i < width; i++)
-                for(int j = 0; j <  height; j++)
-                    zbuffer[i, j] = +2147483647;
             if(x0 > width || x1 > width || y0 > height || y1 > height || x0 < 0 || x1 < 0 || y0 < 0 || y1 < 0) { }
             else
             {
