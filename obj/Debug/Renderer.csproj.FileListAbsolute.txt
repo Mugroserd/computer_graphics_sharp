@@ -1,0 +1,9 @@
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\obj\Debug\Renderer.csprojResolveAssemblyReference.cache
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\obj\Debug\Renderer.Form1.resources
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\obj\Debug\Renderer.Properties.Resources.resources
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\obj\Debug\Renderer.csproj.GenerateResource.Cache
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\bin\Debug\Renderer.exe.config
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\bin\Debug\Renderer.exe
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\bin\Debug\Renderer.pdb
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\obj\Debug\Renderer.exe
+c:\users\mugroserd\documents\visual studio 2017\Projects\Renderer\Renderer\obj\Debug\Renderer.pdb
