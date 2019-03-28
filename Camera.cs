@@ -55,7 +55,7 @@ namespace Renderer
 
         public Matrix4 GetMatrix()
         {
-            return Matrix4.Multiply(scaleMatrix,  Matrix4.Multiply(positionMatrix, rotationMatrix));
+            return Matrix4.Multiply(perspectiveMatrix, Matrix4.Multiply(scaleMatrix,  Matrix4.Multiply(positionMatrix, rotationMatrix)));
         }
     }
 }

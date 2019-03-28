@@ -34,7 +34,7 @@ namespace Renderer
             b = c;
         }
 
-        public void ShadeBackgroundPixel(int x, int y, Point3F point1, Point3F point2, Point3F point3, VertexParam[] pointsColors, ref int zBuf)
+        public void ShadeBackgroundPixel(int x, int y, Point3F point1, Point3F point2, Point3F point3, float[,] pointsColors, ref int zBuf)
         {
             Color pixelValue;
             Point3F drawingPoint;
@@ -51,8 +51,8 @@ namespace Renderer
                 if (l1 >= 0 && l1 <= 1 && l2 >= 0 && l2 <= 1 && l3 >= 0 && l3 <= 1)
                 {
                     drawingPoint.z = (float)(point1.z * l1 + point2.z * l2 + point3.z * l3);
-                    pixelValue = textureBitmap.GetPixel(((int)(pointsColors[0].values[0] * l1 * 512 + pointsColors[1].values[0] * l2 * 512 + pointsColors[2].values[0] * l3 * 512) % 512),
-                                                        (512 - (int)(pointsColors[0].values[1] * l1 * 512 + pointsColors[1].values[1] * l2 * 512 + pointsColors[2].values[1] * l3 * 512)) % 512);
+                    pixelValue = textureBitmap.GetPixel(((int)(pointsColors[0, 0] * l1 + pointsColors[1, 0] * l2 + pointsColors[2, 0] * l3)  % textureBitmap.Width),
+                                 (textureBitmap.Height - (int)(pointsColors[0, 1] * l1 + pointsColors[1, 1] * l2 + pointsColors[2, 1] * l3)) % textureBitmap.Height);
                     SetPixel(drawingPoint, pixelValue, ref zBuf);
                 }
         }
@@ -61,43 +61,33 @@ namespace Renderer
         {
             Point3F point;
 
-            point.x = buffer.Width/2 + coordinate.values[0] * buffer.Width;
+            point.x = width/2 + coordinate.values[0] * width;
 
-            point.y = buffer.Height/2 + coordinate.values[1] * buffer.Height;
+            point.y = height/2 + coordinate.values[1] * height;
 
-            point.z = buffer.Height/2 + coordinate.values[2] * buffer.Height;
+            point.z = height/2 + coordinate.values[2] * height;
             return point;
         }
         
-        private UInt32[] ConvertToTexture(VertexParam texturePoint1, VertexParam texturePoint2, VertexParam texturePoint3)
+        private float[,] ConvertToTexture(VertexParam[] texturePoints)
         {
-            UInt32[] colors = new UInt32[3];
+            float[,] values = new float[3, 2];
 
-            Color tempColor = textureBitmap.GetPixel((int)(Math.Ceiling(texturePoint1.values[0] * textureBitmap.Width - 1)),
-                                                     (int)(Math.Ceiling(texturePoint1.values[1] * textureBitmap.Height - 1)));
-            colors[0] = (UInt32)tempColor.ToArgb();
+            for(int i = 0; i < 3; i++)
+            {
+                values[i, 0] = texturePoints[i].values[0] * textureBitmap.Width;
+                values[i, 1] = texturePoints[i].values[1] * textureBitmap.Height;
+            }
 
-            tempColor = textureBitmap.GetPixel((int)(Math.Ceiling(texturePoint2.values[0] * textureBitmap.Width - 1)),
-                                                     (int)(Math.Ceiling(texturePoint2.values[1] * textureBitmap.Height - 1)));
-            colors[1] = (UInt32)tempColor.ToArgb();
-
-            tempColor = textureBitmap.GetPixel((int)(Math.Ceiling(texturePoint3.values[0] * textureBitmap.Width - 1)),
-                                                     (int)(Math.Ceiling(texturePoint3.values[1] * textureBitmap.Height - 1)));
-            colors[2] = (UInt32)tempColor.ToArgb();
-
-            return colors;
-        }
-
-        private struct Point2D
-        {
-            public int x, y;
+            return values;
         }
 
         public void SetPixel(Point3F drawingPoint, Color color, ref int zBuf)
         {
-            if (drawingPoint.x >= 0 && drawingPoint.x < width && drawingPoint.y >= 0 && drawingPoint.y < height && drawingPoint.z < zBuf)
+            if (drawingPoint.z < zBuf)
             {
-                buffer.SetPixel((int)Math.Ceiling(drawingPoint.x), (int)Math.Ceiling(drawingPoint.y), color);
+                if(drawingPoint.x >= 0 && drawingPoint.x < width && drawingPoint.y >= 0 && drawingPoint.y < height)
+                    buffer.SetPixel((int)Math.Ceiling(drawingPoint.x), (int)Math.Ceiling(drawingPoint.y), color);
                 zBuf = (int)Math.Ceiling(drawingPoint.z);
             }
         }
@@ -113,10 +103,12 @@ namespace Renderer
             int y0 = (int)Math.Floor((Math.Min(point1.y, Math.Min(point2.y, point3.y))));
             int y1 = (int)Math.Ceiling((Math.Max(point1.y, Math.Max(point2.y, point3.y))));
 
+            float[,] values = new float[3, 2];
             VertexParam[] vertices = new VertexParam[3];
             vertices[0] = point1texture;
             vertices[1] = point2texture;
             vertices[2] = point3texture;
+            values = ConvertToTexture(vertices);
 
             if (x0 > width || x1 > width || y0 > height || y1 > height || x0 < 0 || x1 < 0 || y0 < 0 || y1 < 0) { }
             else
@@ -124,7 +116,7 @@ namespace Renderer
                 for (int x = x0; x < x1; x++)
                     for (int y = y0; y < y1; y++)
                     {
-                        ShadeBackgroundPixel(x, y, point1, point2, point3, vertices, ref zbuffer[x,y]);
+                        ShadeBackgroundPixel(x, y, point1, point2, point3, values, ref zbuffer[x,y]);
                     }
             }
         }

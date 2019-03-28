@@ -35,11 +35,6 @@ namespace Renderer
             VertexParam[] transformedCoords = new VertexParam[vertices.Length];
             for (int vertexNum = 0; vertexNum < vertices.Length; vertexNum++)
                 transformedCoords[vertexNum] = vertices[vertexNum].position.Transform(transformationMatrix, 1);
-
-            /* target.DrawLine(transformedCoords[0], transformedCoords[1], color);
-            target.DrawLine(transformedCoords[1], transformedCoords[2], color);
-            target.DrawLine(transformedCoords[2], transformedCoords[0], color); */
-            // target.DrawTriangle(transformedCoords[0], transformedCoords[1], transformedCoords[2], vertices[0].texture, vertices[1].texture, vertices[2].texture, color);
         }
 
         public void DrawTriangle(TextureBuffer target, Matrix4 transformationMatrix, ref int[,] zbuffer)
@@ -47,10 +42,6 @@ namespace Renderer
             VertexParam[] transformedCoords = new VertexParam[vertices.Length];
             for (int vertexNum = 0; vertexNum < vertices.Length; vertexNum++)
                 transformedCoords[vertexNum] = vertices[vertexNum].position.Transform(transformationMatrix, 1);
-
-            /* target.DrawLine(transformedCoords[0], transformedCoords[1], color);
-            target.DrawLine(transformedCoords[1], transformedCoords[2], color);
-            target.DrawLine(transformedCoords[2], transformedCoords[0], color); */
             target.DrawTriangle(transformedCoords[0], transformedCoords[1], transformedCoords[2], vertices[0].texture, vertices[1].texture, vertices[2].texture, ref zbuffer);
         }
     }

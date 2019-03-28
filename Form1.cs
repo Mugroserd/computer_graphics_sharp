@@ -15,7 +15,7 @@ namespace Renderer
     public partial class Form1 : Form
     {
         private Random rand = new Random();
-        private Camera camera = new Camera(640, 640, ConvertToRads(90), 1, 100);
+        private Camera camera = new Camera(640, 640, ConvertToRads(60), 1, 100);
         private Mesh mesh = ObjectParser.GetMeshFromObj("webber_triangulated.obj");
         private Color newColor = Color.FromArgb(0, 255, 255);
 
