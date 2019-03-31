@@ -23,9 +23,7 @@ namespace Renderer
                 for (int j = 0; j < 640; j++)
                     zbuffer[i, j] = +2147483647;
             foreach (Triangle triangle in triangles)
-                // triangle.DrawWire(target, transformationMatrix, color);
                 triangle.DrawTriangle(target, transformationMatrix, ref zbuffer);
         }
-        //getstrung
     }
 }

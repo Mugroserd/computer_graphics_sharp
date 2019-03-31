@@ -54,11 +54,11 @@ namespace Renderer
         {
             Point3F point;
 
-            point.x = width / 2 + coordinate.values[0] * width;
+            point.x = width/2 + coordinate.values[0] * width;
 
-            point.y = height / 2 + coordinate.values[1] * height;
+            point.y = height/2 + coordinate.values[1] * height;
 
-            point.z = height / 2 + coordinate.values[2] * height;
+            point.z = height/2 + coordinate.values[2] * height;
             return point;
         }
 
@@ -79,8 +79,7 @@ namespace Renderer
         {
             if (drawingPoint.z < zBuf)
             {
-                if (drawingPoint.x >= 0 && drawingPoint.x < width && drawingPoint.y >= 0 && drawingPoint.y < height)
-                    buffer.SetPixel((int)Math.Ceiling(drawingPoint.x), (int)Math.Ceiling(drawingPoint.y), color);
+                buffer.SetPixel((int)Math.Ceiling(drawingPoint.x), (int)Math.Ceiling(drawingPoint.y), color);
                 zBuf = (int)Math.Ceiling(drawingPoint.z);
             }
         }

@@ -15,8 +15,8 @@ namespace Renderer
     public partial class Form1 : Form
     {
         private Random rand = new Random();
-        private Camera camera = new Camera(640, 640, ConvertToRads(60), 1, 100);
-        private Mesh mesh = ObjectParser.GetMeshFromObj("webber_triangulated.obj");
+        private Camera camera = new Camera(640, 640, ConvertToRads(90), 1, 200);
+        private Mesh mesh = ObjectParser.GetMeshFromObj("webber_cool.obj");
         private Color newColor = Color.FromArgb(0, 255, 255);
 
         Rectangle rect = new Rectangle(0, 0, 640, 640);
@@ -29,14 +29,15 @@ namespace Renderer
         private float pitchChange = 0;
         private float rollChange = 0;
 
-        private SolidBrush backgroundBrush = new SolidBrush(Color.Black); // Кисть фона
+        private SolidBrush backgroundBrush = new SolidBrush(Color.LightGray); // Кисть фона
         private Pen pen = new Pen(Color.White);
 
         public Form1()
         {
             InitializeComponent();
-            camera.RotateTo(new Angle3F(ConvertToRads(180), 0, ConvertToRads(180)));
-            camera.ScaleTo(new Point3F(0.15f, 0.15f, 0.15f));
+            rollChange = ConvertToRads(180);
+            camera.RotateTo(new Angle3F(yawChange, pitchChange, rollChange));
+            camera.ScaleTo(new Point3F(0.05f, 0.05f, 0.05f));
         }
 
         private static float ConvertToRads(int degrees)
@@ -105,6 +106,20 @@ namespace Renderer
         private void moveRight_Click(object sender, EventArgs e)
         {
             xOffset += (float)Convert.ToDouble(offsetValue.Text);
+            Redraw();
+            Refresh();
+        }
+
+        private void moveOut_Click(object sender, EventArgs e)
+        {
+            zOffset += (float)Convert.ToDouble(offsetValue.Text);
+            Redraw();
+            Refresh();
+        }
+
+        private void moveCloser_Click(object sender, EventArgs e)
+        {
+            zOffset -= (float)Convert.ToDouble(offsetValue.Text);
             Redraw();
             Refresh();
         }

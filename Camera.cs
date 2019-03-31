@@ -27,7 +27,7 @@ namespace Renderer
             outputBuffer = new TextureBuffer(bufferWidth, bufferHeight);
             MoveTo(new Point3F(0, 0, 0));
             RotateTo(new Angle3F(0, 0, 0));
-            perspectiveMatrix = Matrix4.FromPesrpective(fov, nearPlane, farPlane, bufferWidth / bufferHeight);
+            perspectiveMatrix = Matrix4.FromPesrpective(fov, nearPlane, farPlane, bufferWidth/bufferHeight);
         }
 
         public void Draw(Mesh mesh, Color color)
@@ -55,7 +55,19 @@ namespace Renderer
 
         public Matrix4 GetMatrix()
         {
-            return Matrix4.Multiply(perspectiveMatrix, Matrix4.Multiply(scaleMatrix,  Matrix4.Multiply(positionMatrix, rotationMatrix)));
+            // return Matrix4.Multiply(scaleMatrix,  Matrix4.Multiply(positionMatrix, rotationMatrix));
+            Matrix4 unoMatrix = new Matrix4();
+            unoMatrix.values = new float[,]{
+                { 1, 0, 0, 0},
+                { 0, 1, 0, 0},
+                { 0, 0, 1, 0},
+                { 0, 0, 0, 1}
+            };
+            unoMatrix = Matrix4.Multiply(unoMatrix, perspectiveMatrix);
+            unoMatrix = Matrix4.Multiply(unoMatrix, positionMatrix);
+            unoMatrix = Matrix4.Multiply(unoMatrix, rotationMatrix);
+            unoMatrix = Matrix4.Multiply(unoMatrix, scaleMatrix);
+            return unoMatrix;
         }
     }
 }

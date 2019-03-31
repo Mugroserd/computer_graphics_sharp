@@ -136,6 +136,7 @@
             this.moveOut.TabIndex = 5;
             this.moveOut.Text = "от нас";
             this.moveOut.UseVisualStyleBackColor = true;
+            this.moveOut.Click += new System.EventHandler(this.moveOut_Click);
             // 
             // moveCloser
             // 
@@ -145,6 +146,7 @@
             this.moveCloser.TabIndex = 4;
             this.moveCloser.Text = "|__";
             this.moveCloser.UseVisualStyleBackColor = true;
+            this.moveCloser.Click += new System.EventHandler(this.moveCloser_Click);
             // 
             // moveRight
             // 

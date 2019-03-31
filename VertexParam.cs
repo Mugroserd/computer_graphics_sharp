@@ -30,8 +30,10 @@ namespace Renderer
         
         public VertexParam Transform(Matrix4 mat, float constant)
         {
-            float[] newValues = new float[valuesAmt];
-            for (int valueNum = 0; valueNum < valuesAmt; valueNum++)
+            byte newValuesAmt = (byte)(valuesAmt + 1);
+            float[] newValues = new float[newValuesAmt];
+            newValues[newValuesAmt - 1] = constant;
+            for (int valueNum = 0; valueNum < newValuesAmt; valueNum++)
             {
                 newValues[valueNum] = 0;
                 for (int cellNum = 0; cellNum < 4; cellNum++)
@@ -42,7 +44,11 @@ namespace Renderer
                         newValues[valueNum] += values[cellNum] * mat.values[valueNum, cellNum];
                 }
             }
-            return new VertexParam(type, valuesAmt, newValues);
+
+            for (int valueNum = 0; valueNum < newValuesAmt; valueNum++)
+                newValues[valueNum] /= newValues[newValuesAmt - 1];
+
+            return new VertexParam(type, newValuesAmt, newValues);
         }
     }
 }

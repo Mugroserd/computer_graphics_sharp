@@ -14,8 +14,8 @@ namespace Renderer
         public static Matrix4 Multiply(Matrix4 mat1, Matrix4 mat2)
         {
             Matrix4 result = new Matrix4();
-            for(int x = 0; x < 4; x++)
-                for(int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
+                for (int y = 0; y < 4; y++)
                 {
                     result.values[y, x] = 0;
                     for (int i = 0; i < 4; i++)
@@ -91,20 +91,27 @@ namespace Renderer
 
         public static Matrix4 FromPesrpective(float fov, float near, float far, float aspect)
         {
-            float lapis = 1 / (float)Math.Tan(fov/2);
-            float peridot = far - near;
+            float lapis = 1.0f / (float)Math.Tan(fov / 2);
+            float peridot = 1.0f / (near - far);
             /*float[,] values = {
-                {lapis / aspect, 0,      0,                       0},
-                {0,              lapis,  0,                       0},
-                {0,              0,      (-far - near) / peridot, -2 * far * near / peridot},
-                {0,              0,     -1,                       0}
-            };*/
+                {lapis / aspect, 0,      0,                        0},
+                {0,              lapis,  0,                        0},
+                {0,              0,      (far + near) * peridot,  -1},
+                {0,              0,      2 * far * near * peridot, 0}
+            }; */
             float[,] values = {
                 {lapis / aspect, 0,      0,                        0},
                 {0,              lapis,  0,                        0},
-                {0,              0,      (-far - near) / peridot, -1},
-                {0,              0,     -2 * far * near / peridot, 0}
+                {0,              0,      (near + far) * peridot,    2 * far * near * peridot},
+                {0,              0,      -1, 0}
             };
+            /*
+            float[,] values = {
+                {1,       0,       0,       0},
+                {0,       1,       0,       0},
+                {0,       0,       1,       0},
+                {0,       0,       1,       1}
+            }; */
             Matrix4 result = new Matrix4();
             result.values = values;
             return result;
