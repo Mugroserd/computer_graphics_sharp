@@ -99,10 +99,15 @@ namespace CustomStructures
         {
             return new Point3F(point1.x - point2.x, point1.y - point2.y, point1.z - point2.z);
         }
-		
+
         public static Point3F operator *(Point3F point1, float alpha)
         {
             return new Point3F(point1.x * alpha, point1.y * alpha, point1.z * alpha);
+        }
+
+        public static Point3F operator /(Point3F point1, float alpha)
+        {
+            return new Point3F(point1.x / alpha, point1.y / alpha, point1.z / alpha);
         }
 
         public static bool operator ==(Point3F point1, Point3F point2)
@@ -122,57 +127,6 @@ namespace CustomStructures
         }
     }
 	
-	struct Point3D
-    {
-        public float x, y, z;
-
-        public Point3D(float x, float y, float z)
-        {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public void Set(Point3D point)
-        {
-            x = point.x;
-            y = point.y;
-            z = point.z;
-        }
-
-        public static Point3D operator +(Point3D point1, Point3D point2)
-        {
-            return new Point3D(point1.x + point2.x, point1.y + point2.y, point1.z + point2.z);
-        }
-
-        public static Point3D operator -(Point3D point1, Point3D point2)
-        {
-            return new Point3D(point1.x - point2.x, point1.y - point2.y, point1.z - point2.z);
-        }
-
-        public static Point3D operator *(Point3D point1, float alpha)
-        {
-            return new Point3D(point1.x * alpha, point1.y * alpha, point1.z * alpha);
-        }
-		
-        public static bool operator ==(Point3D point1, Point3D point2)
-        {
-            if (point1.x == point2.x && point1.y == point2.y && point1.z == point2.z)
-                return true;
-            else
-                return false;
-        }
-
-        public static bool operator !=(Point3D point1, Point3D point2)
-        {
-            if (point1.x != point2.x || point1.y != point2.y || point1.z != point2.z)
-                return true;
-            else
-                return false;
-        }
-    }
-
-
     struct Angle1F
     {
         private float rotation;

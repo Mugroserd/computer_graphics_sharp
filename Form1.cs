@@ -16,18 +16,22 @@ namespace Renderer
     {
         private Random rand = new Random();
         private Camera camera = new Camera(640, 640, ConvertToRads(90), 1, 200);
+        private PointLight light = new PointLight(new Point3F(1, 1, 1), new Color3F(1, 1, 1));
+        private TextureBuffer texture = new TextureBuffer(new Bitmap("webber_diffuse4.png"));
         private Mesh mesh = ObjectParser.GetMeshFromObj("webber_cool.obj");
+        private Model model;
+
         private Color newColor = Color.FromArgb(0, 255, 255);
 
         Rectangle rect = new Rectangle(0, 0, 640, 640);
 
         private float xOffset = 0;
-        private float yOffset = 0;
-        private float zOffset = 0;
+        private float yOffset = 3;
+        private float zOffset = 6;
 
         private float yawChange = 0;
         private float pitchChange = 0;
-        private float rollChange = 0;
+        private float rollChange = ConvertToRads(180);
 
         private SolidBrush backgroundBrush = new SolidBrush(Color.LightGray); // Кисть фона
         private Pen pen = new Pen(Color.White);
@@ -35,9 +39,11 @@ namespace Renderer
         public Form1()
         {
             InitializeComponent();
-            rollChange = ConvertToRads(180);
+
+            model = new Model(mesh, texture);
             camera.RotateTo(new Angle3F(yawChange, pitchChange, rollChange));
-            camera.ScaleTo(new Point3F(0.05f, 0.05f, 0.05f));
+
+            outputBox.Image = camera.outputBuffer.GetBitmap();
         }
 
         private static float ConvertToRads(int degrees)
@@ -47,39 +53,43 @@ namespace Renderer
 
         private void Redraw()
         {
-            outputBox.Image = camera.outputBuffer.GetBitmap();
-            Graphics.FromImage(outputBox.Image).FillRectangle(backgroundBrush, rect);
+            //Graphics.FromImage(outputBox.Image).FillRectangle(backgroundBrush, rect);
+            //model.MoveTo(new Point3F(0, 0, -6));
             camera.MoveTo(new Point3F(xOffset, yOffset, zOffset));
+            //light.MoveTo(new Point3F(xOffset, yOffset, zOffset));
             camera.RotateTo(new Angle3F(yawChange, pitchChange, rollChange));
-            camera.Draw(mesh, newColor);
+            camera.outputBuffer.Open();
+            camera.Draw(model, light);
+            camera.outputBuffer.Close();
             Refresh();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*
             Rectangle rect = new Rectangle(0, 0, 640, 640);
-            Region region1 = new Region(new Rectangle(0, 0, 640, 640));
             Color newColor = Color.FromArgb(255, 0, 0);
 
-            for (float i = 30f; i < 3.14f * 80; i += 0.1f)
+            for (float i = 0f; i < 3.14f * 2; i += 0.1f)
             {
-                newColor = Color.FromArgb((int)(192 - 63 * Math.Sin(i)), 64, (int)(192 - 63 * Math.Cos(i)));
+                light.SetColor(new Color3F((float)(192 - 63 * Math.Sin(i * 5)) / 255, 64.0f / 255, (float)(192 - 63 * Math.Cos(i * 5)) / 255));
                 Graphics.FromImage(outputBox.Image).FillRectangle(backgroundBrush, rect);
-                for(int j = 0; j < 128; j++)
-                {
-                    float p1 = 640.0f * (float)rand.NextDouble();
-                    float p2 = 640.0f * (float)rand.NextDouble();
+                //for(int j = 0; j < 128; j++)
+                //{
+                //    float p1 = 640.0f * (float)rand.NextDouble();
+                //    float p2 = 640.0f * (float)rand.NextDouble();
 
-                    Graphics.FromImage(outputBox.Image).DrawLine(pen, p1, p2, p1 + 40, p2);
-                }
-                camera.MoveTo(new Point3F(2 * (float)Math.Cos(i/10), 0, 3 * (float)Math.Sin(i/10)));
-                camera.RotateTo(new Angle3F(ConvertToRads(90), (float)Math.Sin(i / 2), 0));
-                camera.ScaleTo(new Point3F(0.01f * (float)Math.Sin(i) + 0.085f, 0.01f * (float)Math.Sin(i) + 0.085f, 0.01f * (float)Math.Sin(i) + 0.085f));
-                camera.Draw(mesh, newColor);
+                //    Graphics.FromImage(outputBox.Image).DrawLine(pen, p1, p2, p1 + 40, p2);
+                //}
+                light.MoveTo(new Point3F(2 * (float)Math.Cos(i), 0, 3 * (float)Math.Sin(i)));
+                model.MoveTo(new Point3F(2 * (float)Math.Cos(i), 3 * (float)Math.Sin(i), 0));
+                // model.RotateTo(new Angle3F(ConvertToRads(90), (float)Math.Sin(i / 2), 0));
+                // model.ScaleTo(new Point3F(0.01f * (float)Math.Sin(i) + 0.085f, 0.01f * (float)Math.Sin(i) + 0.085f, 0.01f * (float)Math.Sin(i) + 0.085f));
+                camera.MoveTo(new Point3F(xOffset, yOffset, zOffset));
+                camera.outputBuffer.Open();
+                camera.Draw(model, light);
+                camera.outputBuffer.Close();
                 Refresh();
-            }*/
-
+            }
         }
 
         private void moveDown_Click(object sender, EventArgs e)

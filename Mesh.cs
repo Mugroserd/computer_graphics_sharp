@@ -16,14 +16,10 @@ namespace Renderer
             this.triangles = triangles;
         }
 
-        public void DrawWire(TextureBuffer target, Matrix4 transformationMatrix, Color color)
+        public void Draw(Matrix4 transformationMatrix, TextureBuffer texture, TextureBuffer target, float[,] zbuffer, PointLight light)
         {
-            int[,] zbuffer = new int[640, 640];
-            for (int i = 0; i < 640; i++)
-                for (int j = 0; j < 640; j++)
-                    zbuffer[i, j] = +2147483647;
             foreach (Triangle triangle in triangles)
-                triangle.DrawTriangle(target, transformationMatrix, ref zbuffer);
+                triangle.Draw(transformationMatrix, texture, target, zbuffer, light);
         }
     }
 }

@@ -27,6 +27,15 @@ namespace Renderer
             for (int currentValueNumber = 0; currentValueNumber < valuesAmt; currentValueNumber++)
                 this.values[currentValueNumber] = values[currentValueNumber];
         }
+
+        static public VertexParam FromBarycentric(VertexParam[] vertices, float[] coeffs)
+        {
+            float[] values = new float[vertices[0].valuesAmt];
+            for (int valueNum = 0; valueNum < vertices[0].valuesAmt; valueNum++)
+                values[valueNum] = vertices[0].values[valueNum] * coeffs[0] + vertices[1].values[valueNum] * coeffs[1] + vertices[2].values[valueNum] * coeffs[2];
+
+            return new VertexParam(vertices[0].type, vertices[0].valuesAmt, values);
+        }
         
         public VertexParam Transform(Matrix4 mat, float constant)
         {
